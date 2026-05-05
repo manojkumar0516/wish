@@ -1,13 +1,77 @@
 import { motion } from 'motion/react';
 import { useInView } from 'react-intersection-observer';
 import { MapPin, Calendar, Clock } from 'lucide-react';
+import { useMemo } from 'react';
 
 export function EventDetails() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
+  // 🌟 Generate 40 tiny twinkling stars
+  const stars = useMemo(() => [...Array(40)], []);
+
   return (
-    <section className="py-24 md:py-32 px-6 bg-transparent">
-      <div className="max-w-6xl mx-auto">
+    <section className="relative py-24 md:py-32 px-6 overflow-hidden" style={{ backgroundColor: '#06102E' }}>
+      
+      {/* --- CELESTIAL BACKGROUND SYSTEM --- */}
+      
+      {/* 1. bgZoomDrift: Cinematic Image Texture */}
+      <motion.div
+        animate={{ 
+          scale: [1, 1.1, 1.05, 1.15, 1],
+          rotate: [0, 1, -1, 0.5, 0],
+        }}
+        transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 z-0 opacity-20 pointer-events-none"
+      >
+        <img 
+          src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2560" 
+          className="w-full h-full object-cover"
+          alt=""
+        />
+      </motion.div>
+
+      {/* 2. Twinkling Stars Animation */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {stars.map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ 
+              top: `${Math.random() * 100}%`, 
+              left: `${Math.random() * 100}%`,
+              opacity: Math.random() 
+            }}
+            animate={{ opacity: [0.1, 0.8, 0.1] }}
+            transition={{ 
+              duration: 2 + Math.random() * 3, 
+              repeat: Infinity, 
+              delay: Math.random() * 5 
+            }}
+            className="absolute w-0.5 h-0.5 bg-white rounded-full"
+          />
+        ))}
+      </div>
+
+      {/* 3. Deep Sea & Sapphire Glows */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <motion.div 
+          animate={{ opacity: [0.2, 0.4, 0.2], scale: [0.8, 1.1, 0.8] }}
+          transition={{ duration: 12, repeat: Infinity }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-900/20 rounded-full blur-[160px]"
+        />
+        <motion.div 
+          animate={{ x: [-30, 50, -30], y: [-20, 40, -20] }}
+          transition={{ duration: 25, repeat: Infinity }}
+          className="absolute top-0 left-0 w-[40rem] h-[40rem] bg-blue-600/10 rounded-full blur-[120px]"
+        />
+        <motion.div 
+          animate={{ x: [30, -50, 30], y: [30, -40, 30] }}
+          transition={{ duration: 20, repeat: Infinity }}
+          className="absolute bottom-0 right-0 w-[35rem] h-[35rem] bg-indigo-500/10 rounded-full blur-[120px]"
+        />
+      </div>
+
+      {/* --- CONTENT LAYER --- */}
+      <div className="relative z-10 max-w-4xl mx-auto">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
@@ -15,82 +79,69 @@ export function EventDetails() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <span className="font-sans uppercase tracking-[0.2em] text-gold-600 text-sm font-medium">Where &amp; When</span>
-          <h2 className="font-serif text-4xl md:text-5xl mt-4 text-[#0C2B21]">Event Details</h2>
+          <span className="font-sans uppercase tracking-[0.4em] text-blue-300 text-sm font-bold">Where & When</span>
+          <h2 className="font-serif text-4xl md:text-6xl mt-4 text-white">Event Details</h2>
+          <div className="h-px w-24 bg-gradient-to-r from-transparent via-blue-400 to-transparent mx-auto mt-6" />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-          {/* Info Card */}
-          <motion.div
-            initial={{ opacity: 0, x: -30, filter: "blur(15px)" }}
-            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="bg-white/70 backdrop-blur-md border border-white/50 p-8 sm:p-10 md:p-12 shadow-[0_10px_40px_-15px_rgba(150,135,115,0.2)] relative overflow-hidden rounded-md"
-          >
-            {/* Decorative background element */}
-            <div className="absolute top-0 right-0 p-8 opacity-5">
-              <svg viewBox="0 0 100 100" className="w-64 h-64 text-gold-600 fill-current">
-                <path d="M50,0 C77.614,0 100,22.386 100,50 C100,77.614 77.614,100 50,100 C22.386,100 0,77.614 0,50 C0,22.386 22.386,0 50,0 Z M50,10 C27.909,10 10,27.909 10,50 C10,72.091 27.909,90 50,90 C72.091,90 90,72.091 90,50 C90,27.909 72.091,10 50,10 Z M50,20 C66.569,20 80,33.431 80,50 C80,66.569 66.569,80 50,80 C33.431,80 20,66.569 20,50 C20,33.431 33.431,20 50,20 Z" />
-              </svg>
+        {/* Centered Info Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 p-8 sm:p-10 md:p-16 shadow-2xl relative overflow-hidden rounded-3xl mx-auto"
+        >
+          {/* Decorative Celestial Ring */}
+          <div className="absolute -top-10 -right-10 opacity-10">
+            <svg viewBox="0 0 100 100" className="w-64 h-64 text-blue-300 fill-current">
+              <path d="M50,0 C77.614,0 100,22.386 100,50 C100,77.614 77.614,100 50,100 C22.386,100 0,77.614 0,50 C0,22.386 22.386,0 50,0 Z M50,10 C27.909,10 10,27.909 10,50 C10,72.091 27.909,90 50,90 C72.091,90 90,72.091 90,50 C90,27.909 72.091,10 50,10 Z" />
+            </svg>
+          </div>
+
+          <div className="text-center mb-12">
+            <h3 className="font-serif text-3xl text-white border-b border-white/10 pb-4 inline-block">
+              The Muhurtham
+            </h3>
+          </div>
+          
+          <div className="grid sm:grid-cols-3 gap-8 sm:gap-12 relative z-10">
+            {/* Date */}
+            <div className="flex flex-col items-center text-center">
+              <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-300 mb-4 border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+                <Calendar size={24} />
+              </div>
+              <h4 className="font-serif text-xl mb-2 text-white">Date</h4>
+              <p className="text-blue-100/80 font-medium">Monday, May 18, 2026</p>
+            </div>
+            
+            {/* Time */}
+            <div className="flex flex-col items-center text-center">
+              <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-300 mb-4 border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+                <Clock size={24} />
+              </div>
+              <h4 className="font-serif text-xl mb-2 text-white">Time</h4>
+              <p className="text-blue-100/80 font-medium leading-tight">10:00 AM - 12:00 PM</p>
+              <p className="text-[10px] text-blue-300 font-bold uppercase tracking-widest mt-2">Reception at 7:00 PM</p>
             </div>
 
-            <h3 className="font-serif text-3xl mb-8 border-b border-gold-200 pb-4 inline-block text-[#0C2B21]">Muhurtham</h3>
-            
-            <ul className="space-y-8 relative z-10">
-              <li className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-gold-50 flex items-center justify-center text-gold-600 shrink-0 border border-gold-200">
-                  <Calendar size={18} />
-                </div>
-                <div>
-                  <h4 className="font-serif text-xl mb-1 text-[#0C2B21]">Date</h4>
-                  <p className="text-[#0F2922] font-medium">Monday, May 18, 2026</p>
-                </div>
-              </li>
-              
-              <li className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-gold-50 flex items-center justify-center text-gold-600 shrink-0 border border-gold-200">
-                  <Clock size={18} />
-                </div>
-                <div>
-                  <h4 className="font-serif text-xl mb-1 text-[#0C2B21]">Time</h4>
-                  <p className="text-[#0F2922] font-medium">10:00 AM - 12:00 PM</p>
-                  <p className="text-sm text-gold-500 font-medium mt-1">Reception starts at 7:00 PM</p>
-                </div>
-              </li>
+            {/* Venue */}
+            <div className="flex flex-col items-center text-center">
+              <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-300 mb-4 border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+                <MapPin size={24} />
+              </div>
+              <h4 className="font-serif text-xl mb-2 text-white">Venue</h4>
+              <p className="text-blue-100/80 font-medium">MRJ Mahal</p>
+              <p className="text-blue-200/60 text-xs mt-2 leading-relaxed">
+                Somarasapettai, Trichy
+              </p>
+            </div>
+          </div>
 
-              <li className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-gold-50 flex items-center justify-center text-gold-600 shrink-0 border border-gold-200">
-                  <MapPin size={18} />
-                </div>
-                <div>
-                  <h4 className="font-serif text-xl mb-1 text-[#0C2B21]">Venue</h4>
-                  <p className="text-[#0F2922] font-medium">MRJ Mahal</p>
-                  <p className="text-[#0F2922] text-sm font-medium mt-1 leading-relaxed border-t border-dashed border-gold-200 pt-2 mt-2">Kalaiyammal Kovil Street,<br/>Somarasapettai, Trichy, Tamil Nadu</p>
-                </div>
-              </li>
-            </ul>
-          </motion.div>
-
-          {/* Map Embed Container */}
-          <motion.div
-            initial={{ opacity: 0, x: 30, filter: "blur(15px)" }}
-            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-            className="aspect-[4/3] md:aspect-auto md:h-full min-h-[350px] w-full bg-[#DCE5E0] rounded-md overflow-hidden shadow-lg border border-gold-200/50"
-          >
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15676.12199279093!2d78.6369062!3d10.8066504!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3baaf50affffffff%3A0xabcdefabcdef!2sSomarasapettai%2C%20Tiruchirappalli%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1715000000000!5m2!1sen!2sin" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0, filter: 'sepia(0.3) saturate(1.2) hue-rotate(-15deg)' }} 
-              allowFullScreen={true} 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </motion.div>
-        </div>
+          <div className="mt-12 pt-8 border-t border-white/5 text-center">
+             <p className="text-blue-200/40 text-sm italic">Kalaiyammal Kovil Street, Somarasapettai, Trichy, Tamil Nadu</p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
